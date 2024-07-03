@@ -2,6 +2,7 @@ import pickle
 import streamlit as st
 import requests
 
+
 def fetch_poster(movie_id):
     url = "https://api.themoviedb.org/3/movie/{}?api_key=8265bd1679663a7ea12ac168da84d2e8&language=en-US".format(movie_id)
     data = requests.get(url)
@@ -22,11 +23,16 @@ def recommend(movie):
         recommended_movie_names.append(movies.iloc[i[0]].title)
 
     return recommended_movie_names,recommended_movie_posters
+   
 
+st.logo("prj.png")
+st.header('_Pratiman\'s_', divider='rainbow')
+st.image('prj.png', width=700)
+st.divider()
+st.header('Movie Recommender System   \t:🎥')
 
-st.header('Movie Recommender System')
-movies = pickle.load(open('model/movie_list.pkl','rb'))
-similarity = pickle.load(open('model/similarity.pkl','rb'))
+movies = pickle.load(open('movies.pkl','rb'))
+similarity = pickle.load(open('similarity.pkl','rb'))
 
 movie_list = movies['title'].values
 selected_movie = st.selectbox(
@@ -53,3 +59,34 @@ if st.button('Show Recommendation'):
     with col5:
         st.text(recommended_movie_names[4])
         st.image(recommended_movie_posters[4])
+        
+        
+page_bg_img = f"""
+<style>
+[data-testid="stAppViewContainer"] > .main{{
+background-image: url("https://help.nflxext.com/0af6ce3e-b27a-4722-a5f0-e32af4df3045_what_is_netflix_5_en.png");
+background-size: 100%;
+background-position: top center;
+background-attachment: local;
+}}
+[data-testid="stHeader"] {{
+background: rgba(0,0,0,0);
+}}
+h2 {{
+font-family: "Source Sans Pro", sans-serif;
+text-shadow: 0 0 3px #000, 0 0 5px #0000FF;
+color: rgb(250, 250, 250); 
+letter-spacing: -0.005em;
+padding: 1rem 0px;
+margin: 0px;
+line-height: 1.2;
+}}
+p, ol, ul, dl {{
+    font-family: "Source Sans Pro", sans-serif;
+    text-shadow: 0 0 3px #000, 0 0 5px #0000FF;
+    margin: 0px 0px 1rem;
+    padding: 0px;
+    font-size: 1rem;
+    font-weight: 400;
+}}"""
+st.markdown(page_bg_img, unsafe_allow_html=True)
